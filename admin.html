@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Dashboard – PersewaanAlatFitnes</title>
+  <meta name="robots" content="noindex, nofollow">
+  <link rel="canonical" href="https://persewaanalatfitnes.com/admin.html">
+  
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: { accent: '#A3E635', charcoal: '#0F0F0F' },
+          fontFamily: { sans: ['Plus Jakarta Sans', 'system-ui', 'sans-serif'] }
+        }
+      }
+    }
+  </script>
+  <link rel="stylesheet" href="assets/css/custom.css">
+</head>
+<body class="bg-charcoal text-white antialiased min-h-screen">
+
+  <!-- LOGIN SCREEN -->
+  <div id="login-screen" class="min-h-screen flex items-center justify-center px-4">
+    <div class="glass-card p-8 w-full max-w-md">
+      <div class="text-center mb-8">
+        <div class="w-14 h-14 mx-auto mb-4 rounded-xl bg-accent flex items-center justify-center text-black font-black text-xl">PA</div>
+        <h1 class="text-2xl font-extrabold">Admin Dashboard</h1>
+        <p class="text-zinc-400 text-sm mt-1">PersewaanAlatFitnes</p>
+      </div>
+      
+      <form id="login-form" class="space-y-4">
+        <div>
+          <label class="block text-sm font-medium mb-1.5">Password</label>
+          <input type="password" id="password" class="form-input" placeholder="Masukkan password" required autofocus>
+        </div>
+        <p id="login-error" class="text-red-400 text-sm hidden">Password salah. Coba lagi.</p>
+        <button type="submit" class="btn-energy w-full">Masuk</button>
+      </form>
+      
+      <p class="text-center text-xs text-zinc-600 mt-6">Halaman ini tidak terindeks & tidak ada di menu publik.</p>
+    </div>
+  </div>
+
+  <!-- ADMIN PANEL -->
+  <div id="admin-panel" class="hidden min-h-screen">
+    <!-- Top bar -->
+    <header class="border-b border-white/5 bg-zinc-900/80 backdrop-blur sticky top-0 z-30">
+      <div class="max-w-7xl mx-auto px-4 py-3 flex items-center justify-between">
+        <div class="flex items-center gap-3">
+          <span class="w-8 h-8 rounded-lg bg-accent flex items-center justify-center text-black text-sm font-black">PA</span>
+          <span class="font-bold">Admin Dashboard</span>
+        </div>
+        <div class="flex items-center gap-3">
+          <a href="index.html" target="_blank" class="text-sm text-zinc-400 hover:text-accent">Lihat Situs →</a>
+          <button onclick="logout()" class="text-sm text-red-400 hover:text-red-300 px-3 py-1.5 rounded-lg hover:bg-red-500/10">Logout</button>
+        </div>
+      </div>
+    </header>
+
+    <div class="max-w-7xl mx-auto px-4 py-8">
+      <!-- Tabs -->
+      <div class="flex flex-wrap gap-2 mb-8">
+        <button data-tab="products" onclick="switchTab('products')" class="tab-btn bg-lime-500 text-black px-4 py-2 rounded-lg font-semibold text-sm">Produk</button>
+        <button data-tab="reviews" onclick="switchTab('reviews')" class="tab-btn bg-zinc-800 text-zinc-300 px-4 py-2 rounded-lg font-semibold text-sm">Review Customer</button>
+        <button data-tab="export" onclick="switchTab('export')" class="tab-btn bg-zinc-800 text-zinc-300 px-4 py-2 rounded-lg font-semibold text-sm">Export / Import</button>
+      </div>
+
+      <!-- TAB: PRODUCTS -->
+      <div id="tab-products" class="admin-tab">
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
+          <h2 class="text-xl font-bold">Manajemen Produk</h2>
+          <button onclick="openAddProduct()" class="btn-energy text-sm">+ Tambah Produk</button>
+        </div>
+        
+        <div class="glass-card overflow-x-auto">
+          <table class="w-full admin-table text-sm">
+            <thead>
+              <tr>
+                <th>Produk</th>
+                <th>Harga</th>
+                <th>Stok</th>
+                <th>Featured</th>
+                <th>Aksi</th>
+              </tr>
+            </thead>
+            <tbody id="products-tbody">
+              <!-- Filled by JS -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- TAB: REVIEWS -->
+      <div id="tab-reviews" class="admin-tab hidden">
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
+          <h2 class="text-xl font-bold">Manajemen Review Customer</h2>
+          <button onclick="openAddReview()" class="btn-energy text-sm">+ Tambah Review</button>
+        </div>
+        
+        <div class="glass-card overflow-x-auto">
+          <table class="w-full admin-table text-sm">
+            <thead>
+              <tr>
+                <th>Nama / Kota</th>
+                <th>Rating</th>
+                <th>Isi</th>
+                <th>Tampil</th>
+                <th>Aksi</th>
+              </tr>
+            </thead>
+            <tbody id="reviews-tbody">
+              <!-- Filled by JS -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- TAB: EXPORT -->
+      <div id="tab-export" class="admin-tab hidden">
+        <h2 class="text-xl font-bold mb-6">Export / Import Data</h2>
+        <div class="grid sm:grid-cols-2 gap-6">
+          <div class="glass-card p-6">
+            <h3 class="font-bold mb-2">Export JSON</h3>
+            <p class="text-zinc-400 text-sm mb-4">Download backup produk & review saat ini (dari localStorage).</p>
+            <button onclick="exportJSON()" class="btn-energy text-sm">Download Backup</button>
+          </div>
+          <div class="glass-card p-6">
+            <h3 class="font-bold mb-2">Import JSON</h3>
+            <p class="text-zinc-400 text-sm mb-4">Upload file backup sebelumnya untuk restore data.</p>
+            <input type="file" accept=".json" onchange="importJSON(event)" class="form-input text-sm">
+          </div>
+        </div>
+        <div class="mt-8 glass-card p-6">
+          <h3 class="font-bold mb-2">Catatan</h3>
+          <ul class="text-zinc-400 text-sm space-y-2 list-disc list-inside">
+            <li>Data disimpan di localStorage browser. Untuk production, hubungkan ke CMS / database.</li>
+            <li>Setelah edit, refresh halaman publik untuk melihat perubahan (jika memakai localStorage override).</li>
+            <li>Password default: <code class="text-accent">fitness2026</code> — ganti di admin.js untuk production.</li>
+            <li>Halaman admin tidak muncul di navbar / footer publik.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- PRODUCT MODAL -->
+  <div id="product-modal" class="hidden fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/70">
+    <div class="glass-card p-6 w-full max-w-lg max-h-[90vh] overflow-y-auto">
+      <div class="flex justify-between items-center mb-6">
+        <h3 id="product-modal-title" class="text-lg font-bold">Tambah Produk</h3>
+        <button onclick="closeProductModal()" class="text-zinc-400 hover:text-white text-2xl leading-none">&times;</button>
+      </div>
+      <form id="product-form" class="space-y-4">
+        <input type="hidden" id="product-id">
+        <div>
+          <label class="block text-sm font-medium mb-1">Nama Alat *</label>
+          <input type="text" id="product-name" required class="form-input" placeholder="Contoh: Treadmill Commercial">
+        </div>
+        <div>
+          <label class="block text-sm font-medium mb-1">Kategori *</label>
+          <select id="product-category" required class="form-input">
+            <option value="Cardio">Cardio</option>
+            <option value="Strength">Strength</option>
+            <option value="Yoga & Mobility">Yoga & Mobility</option>
+            <option value="Package">Package</option>
+          </select>
+        </div>
+        <div class="grid grid-cols-3 gap-3">
+          <div>
+            <label class="block text-sm font-medium mb-1">Harian</label>
+            <input type="number" id="product-priceDaily" required class="form-input" placeholder="75000">
+          </div>
+          <div>
+            <label class="block text-sm font-medium mb-1">Mingguan</label>
+            <input type="number" id="product-priceWeekly" required class="form-input" placeholder="400000">
+          </div>
+          <div>
+            <label class="block text-sm font-medium mb-1">Bulanan</label>
+            <input type="number" id="product-priceMonthly" required class="form-input" placeholder="1200000">
+          </div>
+        </div>
+        <div>
+          <label class="block text-sm font-medium mb-1">Status Stok</label>
+          <select id="product-stock" class="form-input">
+            <option value="tersedia">Tersedia</option>
+            <option value="disewa">Disewa</option>
+            <option value="maintenance">Maintenance</option>
+          </select>
+        </div>
+        <div>
+          <label class="block text-sm font-medium mb-1">URL Gambar</label>
+          <input type="url" id="product-image" class="form-input" placeholder="https://...">
+        </div>
+        <div>
+          <label class="block text-sm font-medium mb-1">Deskripsi</label>
+          <textarea id="product-description" rows="2" class="form-input" placeholder="Deskripsi singkat"></textarea>
+        </div>
+        <div class="flex items-center gap-2">
+          <input type="checkbox" id="product-featured" class="rounded">
+          <label for="product-featured" class="text-sm">Tampilkan di Produk Unggulan</label>
+        </div>
+        <div class="flex gap-3 pt-2">
+          <button type="submit" class="btn-energy flex-1">Simpan</button>
+          <button type="button" onclick="closeProductModal()" class="btn-energy-outline flex-1">Batal</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- REVIEW MODAL -->
+  <div id="review-modal" class="hidden fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/70">
+    <div class="glass-card p-6 w-full max-w-lg max-h-[90vh] overflow-y-auto">
+      <div class="flex justify-between items-center mb-6">
+        <h3 id="review-modal-title" class="text-lg font-bold">Tambah Review</h3>
+        <button onclick="closeReviewModal()" class="text-zinc-400 hover:text-white text-2xl leading-none">&times;</button>
+      </div>
+      <form id="review-form" class="space-y-4">
+        <input type="hidden" id="review-id">
+        <div>
+          <label class="block text-sm font-medium mb-1">Nama *</label>
+          <input type="text" id="review-name" required class="form-input" placeholder="Nama customer">
+        </div>
+        <div>
+          <label class="block text-sm font-medium mb-1">Kota *</label>
+          <input type="text" id="review-city" required class="form-input" placeholder="Semarang / Solo / Jogja">
+        </div>
+        <div>
+          <label class="block text-sm font-medium mb-1">Rating (1–5) *</label>
+          <select id="review-rating" required class="form-input">
+            <option value="5">5 ★</option>
+            <option value="4">4 ★</option>
+            <option value="3">3 ★</option>
+            <option value="2">2 ★</option>
+            <option value="1">1 ★</option>
+          </select>
+        </div>
+        <div>
+          <label class="block text-sm font-medium mb-1">Isi Review *</label>
+          <textarea id="review-text" rows="3" required class="form-input" placeholder="Testimoni singkat"></textarea>
+        </div>
+        <div>
+          <label class="block text-sm font-medium mb-1">URL Foto (opsional)</label>
+          <input type="url" id="review-photo" class="form-input" placeholder="https://...">
+        </div>
+        <div class="flex items-center gap-2">
+          <input type="checkbox" id="review-visible" checked class="rounded">
+          <label for="review-visible" class="text-sm">Tampilkan di halaman publik</label>
+        </div>
+        <div class="flex gap-3 pt-2">
+          <button type="submit" class="btn-energy flex-1">Simpan</button>
+          <button type="button" onclick="closeReviewModal()" class="btn-energy-outline flex-1">Batal</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <script src="assets/js/admin.js"></script>
+</body>
+</html>

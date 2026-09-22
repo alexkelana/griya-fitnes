@@ -1,0 +1,56 @@
+[
+  {
+    "id": 1,
+    "name": "Andi Pratama",
+    "city": "Semarang",
+    "rating": 5,
+    "text": "Treadmill-nya bersih banget, delivery cepat ke rumah di Semarang. Workout di rumah jadi konsisten!",
+    "photo": "",
+    "visible": true
+  },
+  {
+    "id": 2,
+    "name": "Siti Rahayu",
+    "city": "Solo",
+    "rating": 5,
+    "text": "Sewa multi-gym buat event komunitas di Solo. Alatnya terawat, stafnya responsif. Recommended!",
+    "photo": "",
+    "visible": true
+  },
+  {
+    "id": 3,
+    "name": "Budi Santoso",
+    "city": "Jogja",
+    "rating": 5,
+    "text": "Package home gym lengkap, harga masuk akal. Rumah di Jogja langsung jadi tempat latihan favorit.",
+    "photo": "",
+    "visible": true
+  },
+  {
+    "id": 4,
+    "name": "Dewi Lestari",
+    "city": "Semarang",
+    "rating": 5,
+    "text": "Dumbbell set adjustable-nya praktis banget. Delivery 3 jam sampai, kondisi seperti baru.",
+    "photo": "",
+    "visible": true
+  },
+  {
+    "id": 5,
+    "name": "Rizky Firmansyah",
+    "city": "Solo",
+    "rating": 4,
+    "text": "Sepeda statis nyaman, cocok HIIT. Sudah sewa 2x di Solo, selalu puas.",
+    "photo": "",
+    "visible": true
+  },
+  {
+    "id": 6,
+    "name": "Maya Putri",
+    "city": "Yogyakarta",
+    "rating": 5,
+    "text": "Yoga mat premium + resistance band untuk kelas komunitas. Kualitas oke, packing rapi.",
+    "photo": "",
+    "visible": true
+  }
+]
