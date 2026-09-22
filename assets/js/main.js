@@ -250,26 +250,9 @@ async function renderHargaTable() {
 }
 
 
-function initFloatingWa() {
-  const wrap = document.getElementById('floating-wa-wrap');
-  const btn = document.getElementById('floating-wa-btn');
-  if (!wrap || !btn) return;
-  btn.addEventListener('click', (e) => {
-    e.stopPropagation();
-    const open = wrap.classList.toggle('open');
-    btn.setAttribute('aria-expanded', open ? 'true' : 'false');
-  });
-  document.addEventListener('click', (e) => {
-    if (!wrap.contains(e.target)) {
-      wrap.classList.remove('open');
-      btn.setAttribute('aria-expanded', 'false');
-    }
-  });
-}
 
 document.addEventListener('DOMContentLoaded', () => {
   initMobileMenu();
-  initFloatingWa();
   renderFeaturedProducts();
   renderAllProducts();
   initProductFilter();
